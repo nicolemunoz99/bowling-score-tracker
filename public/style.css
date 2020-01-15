@@ -1,0 +1,16 @@
+.outline {
+  border-style: solid;
+  border-width: 1px;
+  border-color: grey;
+}
+.main-box {
+  height: 8rem;
+}
+
+.roll-score {
+  height: 2rem;
+}
+
+.turn-score {
+  height: 3rem
+}
