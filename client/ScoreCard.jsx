@@ -12,7 +12,7 @@ const ScoreCard = (props) => {
           return(
           <div key={i} className='col-1 main-box'>
             {i}
-           <Box turnLabel={i} />
+           <Box i={i} currentTurn={props.currentTurn} scores={props.scores}  />
           </div>)
         })
       }
