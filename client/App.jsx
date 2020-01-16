@@ -1,46 +1,40 @@
 import React, { useState, useEffect, useContext} from 'react';
-import produce from "immer";
-import UserInput from './UserInput.jsx';
-import ScoreCard from './ScoreCard.jsx'
+import ScoreCard from './ScoreCard.jsx';
+import Keypad from './Keypad.jsx'
 
 const App = (props) => {
-  // const [scores, updateScores] = useState(null);
-  const [rollPinCount, updateRollPinCount] = useState(null);
+  const [scores, updateScores] = useState(new Array(10).fill({'1':null, '2': null}));
   const [currentRoll, updateCurrentRoll] = useState(1);
-  const [currentTurn, updateCurrentTurn] = useState(1);
-  const [rollTracker, updateRollTracker] = useState(0);
-
-  useEffect(() => {
-    let setupScores = {};
-    for (let i = 1; i <= 10; i++) {
-      sessionStorage.setItem(`turn${i}-roll1`, null)
-      sessionStorage.setItem(`turn${i}-roll2`, null)
-    }
-  }, [])
-
-
-  useEffect(() => {
-    if (rollTracker && rollTracker > 0) {
-      if (currentRoll === 2) { updateCurrentRoll(1), updateCurrentTurn(currentTurn + 1) }
-      else {updateCurrentRoll(2)}
-    }
-  }, [rollTracker])
-
+  const [currentTurn, updateCurrentTurn] = useState(0);  
 
   const handleSubmitScore =(numPins) => {
-    sessionStorage.setItem(`turn${currentTurn}-roll${currentRoll}`, numPins)
-    updateRollPinCount(numPins);
-    updateRollTracker(rollTracker + 1);
+    if (currentTurn === 10) { return }
+    let clonedScores = JSON.parse(JSON.stringify(scores));
+
+    clonedScores[currentTurn][currentRoll] = Number(numPins);
+
+    updateScores(clonedScores);
+    
+    if (currentRoll === 1 && numPins === '10') {
+      updateCurrentTurn(currentTurn + 1);
+      return
+    }
+    if (currentRoll === 2) {
+      updateCurrentRoll(1);
+      updateCurrentTurn(currentTurn + 1);
+    }
+    else {
+      updateCurrentRoll(2);
+    }
   }
 
   return (
-    <div>
+    <div className='app-container'>
       <div>
-        <ScoreCard currentTurn={currentTurn} currentRoll={currentRoll}></ScoreCard>
+        <ScoreCard scores={scores}></ScoreCard>
       </div>
-
       <div>
-        <UserInput handleSubmitScore={handleSubmitScore}/>
+        <Keypad handleSubmitScore={handleSubmitScore}/>
       </div>
     </div>
   )

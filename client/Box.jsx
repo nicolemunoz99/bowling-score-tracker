@@ -1,27 +1,36 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Box = (props) => {
 
+  const renderRoll1 = (num) => {
+    if (num === 10) {
+      return
+    }
+  }
 
-  let roll1 = sessionStorage.getItem(`turn${props.i}-roll1`)
-  roll1 = roll1 === 'null' ? null : roll1;
-  let roll2 = sessionStorage.getItem(`turn${props.i}-roll2`)
-  roll2 = roll2 === 'null' ? null : roll2;
+  const toRender = (roll1, roll2) => {
+    if (roll1 === 10) {return 'X'}
+    if (props.currentRoll ===2 && roll1 + roll2 === 10) { return '/'}
+    return 
+  }
 
-  console.log(typeof roll2)
+  const checkStrike = (num) => {
+    return num === 10 ? 'X' : num;
+  }
+
   return (
     <div>
       <div className="row">
         <div className="col-6 outline roll-score">
-          { roll1 ?  roll1 : null}
+          { props.scoreObj['1']  }
         </div>
         <div className="col-6 outline roll-score">
-          { roll2 ? roll2 : null}
+          { props.scoreObj['2'] }
         </div>
       </div>
       <div className="row outline">
         <div className="col-12 turn-score">
-          {props.currentTurn > props.i ? roll1 + roll2 : null}
+          { props.scoreObj['1'] !== null ? props.scoreObj['1'] + props.scoreObj['2'] : null }
         </div>
       </div>
     </div>

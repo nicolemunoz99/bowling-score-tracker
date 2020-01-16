@@ -2,17 +2,16 @@ import React, { useState, useEffect } from 'react';
 import Box from './Box.jsx'
 
 const ScoreCard = (props) => {
-  let boxes = []
-  for (let i = 1; i <= 10; i++) { boxes.push(i) }
+  
   return (
     <div className="container">
-      <div className="row">
+      <div className="row justify-content-md-center">
       {
-        boxes.map(i => {
+        props.scores.map((scoreObj, i) => {
           return(
           <div key={i} className='col-1 main-box'>
-            {i}
-           <Box i={i} currentTurn={props.currentTurn} scores={props.scores}  />
+            {i+1}
+           <Box scoreObj={scoreObj}  />
           </div>)
         })
       }
